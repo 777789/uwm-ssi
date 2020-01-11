@@ -1,31 +1,34 @@
-openFileSys = open('data/car.txt')
+import math
+
+
+open_file_sys = open('data/car.txt')
 try:
-    sysDec = openFileSys.read() 
+    sys_dec = open_file_sys.read() 
 finally:
-    openFileSys.close()
+    open_file_sys.close()
   
-openFileType = open('data/car-type.txt')
+open_file_type = open('data/car-type.txt')
 try: 
-    sysType = openFileType.read()
+    sys_type = open_file_type.read()
 finally:
-    openFileType.close()
+    open_file_type.close()
 
-openFileDis = open('data/_info-data-discrete.txt')
+open_file_dis = open('data/_info-data-discrete.txt')
 try: 
-    sysDisc = openFileDis.read()  
+    sys_disc = open_file_dis.read()  
 finally:
-    openFileDis.close()
+    open_file_dis.close()
 
-sysD = 'car'
+sys_d = 'car'
 
 tab = []
 sys = []
-allSysDec = []
-tabTemp = []
+all_sys_dec = []
+tab_temp = []
 num = []
-num2 = []
+num_2 = []
 dec = []
-decInt = [
+dec_int = [
         0, 0, 0, 0
 ]
 x = 0
@@ -33,60 +36,60 @@ average = 0
 variance = 0
 
 
-sys = sysDisc.split("\n")
+sys = sys_disc.split("\n")
 for line in sys:
     tab = line.split(" ")
-    if(tab[0] == sysD):
+    if(tab[0] == sys_d):
         tab = line.split(" ")
-        numberOfAttributes = int(tab[1]) - 1
-        numberOfObjects = tab[2]
+        number_of_attributes = int(tab[1]) - 1
+        number_of_objects = tab[2]
     
     
-sys = sysDec.split("\n")
+sys = sys_dec.split("\n")
 for line in sys:
     a = line.split(" ,")
     for lin in a:
         b = lin.split(" ")
         if(b != ['']):
-            allSysDec.append(b[numberOfAttributes])
+            all_sys_dec.append(b[number_of_attributes])
 
 
-def funkcja(kolumna):
+def function(column):
     for line in sys:
         a = line.split(",")
         for lin in a:
             b = lin.split(" ")
             if(b != ['']):
-                num.append(b[kolumna])
+                num.append(b[column])
 
                 
-def funkcja2(kolumna):
+def function_2(column):
     for line in sys:
         a = line.split(" ,")
         for lin in a:
             b = lin.split(" ")
             if(b != ['']):
-                tabTemp.append(b[kolumna])
+                tab_temp.append(b[column])
 
 
-dec = list(set(allSysDec))
+dec = list(set(all_sys_dec))
 print("1. Klasy decyzyjne: " + str(dec))
 
 print("2. Wielkosci klas decyzyjnych:")
 for i in range(0, len(dec)):
-    for j in allSysDec:
+    for j in all_sys_dec:
         if(j == dec[i]):
-            decInt[i] += 1;
+            dec_int[i] += 1;
 for z in range(len(dec)):
-    print(dec[z] + " " + str(decInt[z]))
+    print(dec[z] + " " + str(dec_int[z]))
 
 print("3. Minimalne i maksymalne wartości poszczególnych atrybutów:")
-typee = sysType.split("\n")
+typee = sys_type.split("\n")
 for line in typee:
     a = line.split(" ")
     x=x + 1
     if(a[1] == 'n'):
-        funkcja(x - 1)
+        function(x - 1)
         try:
             if((int(min(num)))):
                 print("Atrybut:" + str(x) + " min: " + str(min(num)))
@@ -101,36 +104,38 @@ for line in typee:
         print("Atrybut:" + str(x) + " nie jest atrybutem numerycznym")
 
 print("4. Dla każdego atrybutu liczba różnych dostępnych wartości:")
-for i in range(0, numberOfAttributes+1):
-    funkcja2(i) 
+for i in range(0, number_of_attributes+1):
+    function_2(i) 
     print("Atrybut " + str(i + 1) + ":")
-    print(len(list(set(tabTemp))))
-    tabTemp.clear()                   
+    print(len(list(set(tab_temp))))
+    tab_temp.clear()                   
                 
-print("5. Dla każdego atrybutu wypisujemy listę wszystkich" 
+print("5. Dla każdego atrybutu wypisujemy listę wszystkich " 
       "różnych dostępnych wartości:")
-for i in range(0, numberOfAttributes+1):
-    funkcja2(i)
+for i in range(0, number_of_attributes+1):
+    function_2(i)
     print("Atrybut " + str(i + 1) + ":")
-    print(list(set(tabTemp)))
-    tabTemp.clear()
+    print(list(set(tab_temp)))
+    tab_temp.clear()
 
 print("6. Odchylenie standardowe dla poszczególnych" 
       "atrybutów w całym systemie i w klasach decyzyjnych:")
 x=0   
-typee = sysType.split("\n")
+typee = sys_type.split("\n")
 for line in typee:
     a = line.split(" ")
     x=x + 1
     if(a[1] == 'n'):
-        funkcja(x - 1)
+        function(x - 1)
         try:
-            for liczba in num:
-                average += liczba
-            average = average / numberOfObjects
-            for liczba in num:
-                variance += ((liczba-average)**2) / (numberOfObjects)
-            print("Warianca wynosi: " + sum(variance))
+            for number in num:
+                average += number
+            average = average / number_of_objects
+            for number in num:
+                variance += ((number-average)**2) / (number_of_objects)
+            standard_deviation = math.sqrt(sum(variance))
+            print("Odchylenie standardowe wynosi: " 
+                  + str(standard_deviation))
         except:
             print("Atrybut:" + str(x) +
                   " w zbiorze występują inne wartosci niż liczby")  
